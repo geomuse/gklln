@@ -85,6 +85,7 @@ DEPENDENCIES
   jekyll-paginate
   jekyll-sitemap
   jekyll-tagging
+  rake (~> 13.3)
 
 BUNDLED WITH
    2.6.3
