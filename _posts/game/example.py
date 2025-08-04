@@ -1,18 +1,17 @@
 import gym
 
-env = gym.make("CartPole-v1")
-obs = env.reset()
+# 创建游戏环境
+env = gym.make("FrozenLake-v1", render_mode="human")
 
-for episode in range(5):  # 训练5局
-    obs = env.reset()
-    done = False
-    total_reward = 0
+# 初始化环境
+env.reset()
 
-    while not done:
-        env.render()  # 可视化（有些系统需要额外设置）
-        action = env.action_space.sample()  # 随机动作
-        obs, reward, done, info = env.step(action)
-        total_reward += reward
+# 运行游戏 500 步（自动玩）
+for _ in range(500):
+    action = env.action_space.sample()  # 随机动作
+    obs, reward, done, truncated, info = env.step(action)
+    if done or truncated:
+        print(reward)
+        env.reset()
 
-    print(f"第 {episode+1} 局总奖励: {total_reward}")
 env.close()

@@ -8,7 +8,7 @@ from dataclasses import dataclass
 class snake():
     pygame.font.init()
     # 游戏窗口大小和速度设置
-    window_width = 800
+    window_width = 600
     window_height = 600
     snake_block = 10
     snake_speed = 15
@@ -90,8 +90,7 @@ class snake():
         done = False
         reward = 0
 
-        if self.snake_x >= self.window_width or self.snake_y >= self.window_height :
-        # if self.snake_x >= self.window_width or self.snake_x < 0 or self.snake_y >= self.window_height or self.snake_y < 0:
+        if self.snake_x >= self.window_width or self.snake_x < 0 or self.snake_y >= self.window_height or self.snake_y < 0 :
             self.score_table_show()
             done = True
             reward = -10

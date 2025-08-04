@@ -5,8 +5,8 @@ author:   geo
 
 | 项目 | 内容 | 状态 | 
 | --- | --- | -- |
-| 介绍 gym 环境 | 介绍gym环境
-| gym 游戏介绍 |
+| 介绍 gym 环境 | 介绍gym环境 | ok 
+| gym 游戏介绍 | 上面已经有了 | ok 
 | 贪吃蛇的建立 | 
 | 贪吃蛇的建立 |
 | 贪吃蛇的建立 |
@@ -18,3 +18,5 @@ author:   geo
 | gym 训练AI |
 | 建立AI 游戏 |
 | 回接到gym环境 |
+
+bundle exec jekyll serve
