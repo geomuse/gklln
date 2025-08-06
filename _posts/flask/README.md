@@ -4,23 +4,23 @@
 
 ## 🧭 **Flask 15 天学习课程总览**
 
-| 天数     | 主题                      | 学习内容                              | 项目/练习               | 状态
-| ------ | ----------------------- | --------------------------------- | --------------|----- |
-| Day 1  | Flask 简介与环境搭建           | 安装 Flask，创建虚拟环境，Hello World 应用    | 第一个 Flask 项目        | ok
-| Day 2  | 路由与视图函数                 | URL 路由、动态参数、返回 HTML               | 创建多个路由页面            | ok
-| Day 3  | 模板引擎 Jinja2             | 使用 `render_template`，变量/控制语句      | 构建简单主页模板            |
-| Day 4  | 表单与请求数据                 | `request` 对象，GET/POST 表单提交        | 简易留言板表单             |
-| Day 5  | 重定向与闪现消息                | `redirect`、`url_for`、`flash`      | 登录重定向示例             |
-| Day 6  | 静态文件管理                  | 引入 CSS/JS/图片                      | 美化页面样式              |
-| Day 7  | Blueprint 模块化           | 使用 `Blueprint` 进行模块化开发            | 分离用户与管理模块           |
-| Day 8  | 数据库基础（Flask-SQLAlchemy） | 创建模型、增删查改、迁移                      | 建立用户模型并操作数据库        |
-| Day 9  | 数据库进阶（关系与查询）            | 一对多/多对多关系，复杂查询                    | 用户与文章模型关联           |
-| Day 10 | 用户注册与登录（Flask-WTF）      | 表单类、自定义验证器、提交表单                   | 实现注册/登录功能           |
-| Day 11 | 用户认证管理（Flask-Login）     | 登录状态保持、保护路由、登出                    | 用户认证系统              |
-| Day 12 | RESTful API 基础          | 使用 `@app.route` 创建 API，返回 JSON    | 创建 `/api/posts` 接口  |
-| Day 13 | 使用 Flask-RESTful        | 类视图方式构建 API，使用 `Resource`         | 完善 API 接口（GET/POST） |
-| Day 14 | 错误处理与日志                 | `404`, `500` 自定义页面，日志记录           | 自定义错误页模板            |
-| Day 15 | Flask 部署实战              | 使用 Gunicorn + Nginx 或 Render 平台部署 | 部署你的 Flask 项目       |
+| 主题                      | 学习内容                              | 项目/练习               | 状态
+| ----------------------- | --------------------------------- | --------------|----- |
+| Flask 简介与环境搭建           | 安装 Flask，创建虚拟环境，Hello World 应用    | 第一个 Flask 项目        | ok
+| 路由与视图函数                 | URL 路由、动态参数、返回 HTML               | 创建多个路由页面        | ok
+| 模板引擎 Jinja2             | 使用 `render_template`，变量/控制语句      | 构建简单主页模板            | ok
+| 表单与请求数据                 | `request` 对象，GET/POST 表单提交        | 简易留言板表单             | ok 
+| 重定向与闪现消息                | `redirect`、`url_for`、`flash`      | 登录重定向示例             | ok
+| 静态文件管理                  | 引入 CSS/JS/图片                      | 美化页面样式              | ok
+| Blueprint 模块化           | 使用 `Blueprint` 进行模块化开发            | 分离用户与管理模块           |
+| 数据库基础（Flask-SQLAlchemy） | 创建模型、增删查改、迁移      | 建立用户模型并操作数据库        |
+| 数据库进阶（关系与查询）            | 一对多/多对多关系，复杂查询     | 用户与文章模型关联           |
+| 用户注册与登录（Flask-WTF）      | 表单类、自定义验证器、提交表单     | 实现注册/登录功能           |
+| 用户认证管理（Flask-Login）     | 登录状态保持、保护路由、登出                    | 用户认证系统              |
+| RESTful API 基础          | 使用 `@app.route` 创建 API，返回 JSON    | 创建 `/api/posts` 接口  |
+| 使用 Flask-RESTful        | 类视图方式构建 API，使用 `Resource`         | 完善 API 接口（GET/POST） |
+| 错误处理与日志                 | `404`, `500` 自定义页面，日志记录           | 自定义错误页模板            |
+| Flask 部署实战              | 使用 Gunicorn + Nginx 或 Render 平台部署 | 部署你的 Flask 项目       |
 
 ---
 

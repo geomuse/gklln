@@ -70,7 +70,7 @@ class snake():
         self.game_window.blit(text, (self.food_x2, self.food_y2))
 
     def design_food3(self):
-        text = self.food_font.render("P", True, self.carrot)
+        text = self.food_font.render("P", True, self.green)
         self.game_window.blit(text, (self.food_x3, self.food_y3))
 
     def display_score(self, score):
