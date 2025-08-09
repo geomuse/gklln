@@ -12,6 +12,6 @@
 | re | 基本入学 | ok
 | 数据清洗 | pandas 和 基本数据分析 |
 |  mongodb 保存 | 基本操作 | ok
-| 项目实战 | 爬取china money | 
+| 项目实战 | 爬取china money | ok
 
 
