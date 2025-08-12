@@ -2,7 +2,7 @@ import gym
 from gym import spaces
 import numpy as np
 import pickle
-from pygame_math_snake import snake
+from pygame_snake import snake
 
 class SnakeEnv(gym.Env):
 
