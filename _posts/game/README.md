@@ -19,4 +19,14 @@ author:   geo
 | 建立AI 游戏 |
 | 回接到gym环境 |
 
-bundle exec jekyll serve
+<!-- bundle exec jekyll serve -->
+
+<!-- 如何创建价格函数就是一个目标
+
+https://hrl.boyuai.com/chapter/1/%E5%88%9D%E6%8E%A2%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0
+
+把其中观念整理好?
+
+https://datawhalechina.github.io/easy-rl/#/chapter1/chapter1
+
+看两本书整理重点. -->
