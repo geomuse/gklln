@@ -1,0 +1,213 @@
+---
+title: "r stduo tidyquant"
+author : geo
+output: html_document
+---
+
+tidyquant
+```{r}
+install.packages('tidyquant')
+```
+
+```{r}
+library(tidyquant)
+library(dplyr)
+# 下载多支股票
+stocks <- tq_get(c("AAPL", "MSFT", "GOOG"),
+                 from = "2020-01-01",
+                 to   = "2024-12-31")
+
+head(stocks)
+```
+
+```{r}
+aapl <- tq_get("AAPL",
+                 from = "2020-01-01",
+                 to   = "2024-12-31")
+
+head(aapl)
+```
+
+```{r}
+returns <- aapl %>%
+  tq_transmute(select     = adjusted,     # 选择调整收盘价
+               mutate_fun = periodReturn, # 计算收益率
+               period     = "daily",      # 日收益率
+               type       = "log")        # 对数收益率
+
+head(returns)
+```
+
+```{r}
+multi_returns <- stocks %>%
+  group_by(symbol) %>%
+  tq_transmute(select     = adjusted,
+               mutate_fun = periodReturn,
+               period     = "monthly",
+               type       = "log")
+
+head(multi_returns)
+```
+
+```{r}
+library(ggplot2)
+
+multi_returns %>%
+  ggplot(aes(x = date, y = monthly.returns, color = symbol)) +
+  geom_line() +
+  labs(title = "Monthly Returns",
+       y = "Log Returns")
+```
+
+```{r}
+aapl_fin <- tq_get("AAPL", get = "financials")
+aapl_fin
+```
+
+```{r}
+# 安装必要套件
+if(!require(tidyquant)) install.packages("tidyquant")
+if(!require(dplyr)) install.packages("dplyr")
+if(!require(ggplot2)) install.packages("ggplot2")
+
+library(tidyquant)
+library(dplyr)
+library(ggplot2)
+
+# Step 1: 定义股票池
+stock_pool <- c("AAPL", "MSFT", "GOOG", "AMZN", "TSLA",
+                "META", "NFLX", "NVDA", "ORCL", "INTC")
+
+# Step 2: 下载过去 2 年的股价
+stocks <- tq_get(stock_pool,
+                 from = "2023-01-01",
+                 to   = Sys.Date())
+
+# Step 3: 计算每月收益率
+monthly_returns <- stocks %>%
+  group_by(symbol) %>%
+  tq_transmute(select     = adjusted,
+               mutate_fun = periodReturn,
+               period     = "monthly",
+               type       = "log")
+
+# Step 4: 计算每支股票的累计收益率
+cumulative_returns <- monthly_returns %>%
+  group_by(symbol) %>%
+  summarise(total_return = sum(monthly.returns, na.rm = TRUE)) %>%
+  arrange(desc(total_return))
+
+# 取前 5 名股票
+top5 <- head(cumulative_returns, 5)
+print(top5)
+
+# Step 5: 绘制前 5 名股票的收益走势
+monthly_returns %>%
+  filter(symbol %in% top5$symbol) %>%
+  ggplot(aes(x = date, y = monthly.returns, color = symbol)) +
+  geom_line(size = 1) +
+  labs(title = "前5名高收益股票月度收益走势",
+       x = "日期",
+       y = "月度对数收益率") +
+  theme_minimal()
+
+```
+
+```{r}
+# 安装套件
+if(!require(shiny)) install.packages("shiny")
+if(!require(tidyquant)) install.packages("tidyquant")
+if(!require(dplyr)) install.packages("dplyr")
+if(!require(ggplot2)) install.packages("ggplot2")
+if(!require(DT)) install.packages("DT")
+
+library(shiny)
+library(tidyquant)
+library(dplyr)
+library(ggplot2)
+library(DT)
+
+# ---------------------
+# UI
+# ---------------------
+ui <- fluidPage(
+  titlePanel("📈 选股机器人 (Shiny + tidyquant)"),
+  
+  sidebarLayout(
+    sidebarPanel(
+      textInput("symbols", "输入股票池 (用逗号分隔):",
+                value = "AAPL,MSFT,GOOG,AMZN,TSLA,META,NFLX,NVDA,ORCL,INTC"),
+      
+      dateRangeInput("daterange", "选择日期范围:",
+                     start = "2023-01-01", end = Sys.Date()),
+      
+      actionButton("run", "开始选股", class = "btn-primary")
+    ),
+    
+    mainPanel(
+      h4("前 5 名高收益股票"),
+      DTOutput("table"),
+      h4("收益走势图"),
+      plotOutput("plot", height = "500px")
+    )
+  )
+)
+
+# ---------------------
+# Server
+# ---------------------
+server <- function(input, output) {
+  
+  observeEvent(input$run, { # nolint
+    req(input$symbols) # nolint
+    
+    # Step 1: 处理股票池输入
+    stock_list <- strsplit(input$symbols, ",")[[1]] %>% trimws()
+    
+    # Step 2: 下载股价数据
+    stocks <- tq_get(stock_list,
+                     from = input$daterange[1],
+                     to   = input$daterange[2])
+    
+    # Step 3: 计算月收益率
+    monthly_returns <- stocks %>%
+      group_by(symbol) %>%
+      tq_transmute(select     = adjusted,
+                   mutate_fun = periodReturn,
+                   period     = "monthly",
+                   type       = "log")
+    
+    # Step 4: 计算累计收益
+    cumulative_returns <- monthly_returns %>%
+      group_by(symbol) %>%
+      summarise(total_return = sum(monthly.returns, na.rm = TRUE)) %>%
+      arrange(desc(total_return))
+    
+    # Step 5: 取前 5 名
+    top5 <- head(cumulative_returns, 5)
+    
+    # 输出表格
+    output$table <- renderDT({
+      datatable(top5, options = list(pageLength = 5))
+    })
+    
+    # 输出图表
+    output$plot <- renderPlot({
+      monthly_returns %>%
+        filter(symbol %in% top5$symbol) %>%
+        ggplot(aes(x = date, y = monthly.returns, color = symbol)) +
+        geom_line(size = 1) +
+        labs(title = "前 5 名高收益股票月度收益走势",
+             x = "日期", y = "月度对数收益率") +
+        theme_minimal()
+    })
+    
+  })
+}
+
+# ---------------------
+# Run App
+# ---------------------
+shinyApp(ui = ui, server = server)
+
+```
