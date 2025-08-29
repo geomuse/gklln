@@ -114,6 +114,223 @@ monthly_returns %>%
 ```
 
 ```{r}
+library(quantmod)
+
+# 抓股价
+getSymbols("AAPL", from = "2020-01-01")
+
+# 财务数据 (EPS, PE 等)
+aapl_pe <- getQuote("AAPL", what = yahooQF("P/E Ratio"))
+print(aapl_pe)
+
+library(tidyquant)
+# 抓取 AAPL 的财务报表
+aapl_fin <- tq_get("AAPL", get = "financials")
+
+head(aapl_fin)
+```
+
+```{r}
+library(quantmod)
+
+# 定义要抓的基本面因子
+fundamentals <- yahooQF(c(
+  "P/E Ratio",
+  "Price/Book",
+  "Price/Sales",
+  "PEG Ratio",
+  "Earnings/Share",
+  "Dividend Yield",
+  "Return on Equity",
+  "Return on Assets",
+  "Beta",
+  "Total Debt/Equity",
+  "Profit Margin",
+  "Operating Margin"
+))
+
+# 抓取 AAPL 的数据
+aapl_factors <- getQuote("AAPL", what = fundamentals)
+print(aapl_factors)
+
+```
+
+```{r}
+library(quantmod)
+library(dplyr)
+
+# 1. 定义常见基本面因子
+fundamentals <- yahooQF(c(
+  "P/E Ratio",
+  "Price/Book",
+  "Price/Sales",
+  "PEG Ratio",
+  "Earnings/Share",
+  "Dividend Yield",
+  "Return on Equity",
+  "Return on Assets",
+  "Beta",
+  "Total Debt/Equity",
+  "Profit Margin",
+  "Operating Margin"
+))
+
+# 2. 定义函数：输入股票代码向量，返回基本面因子表格
+get_factors <- function(stocks) {
+  results <- lapply(stocks, function(sym) {
+    tryCatch({
+      df <- getQuote(sym, what = fundamentals)
+      df$Symbol <- sym
+      return(df)
+    }, error = function(e) {
+      message(paste("Error fetching:", sym))
+      return(NULL)
+    })
+  })
+  
+  # 合并结果
+  result_df <- do.call(rbind, results)
+  
+  # 整理列顺序
+  result_df <- result_df %>%
+    relocate(Symbol, .before = 1)
+  
+  return(result_df)
+}
+
+# 3. 测试：一次抓取多个股票
+stocks <- c("AAPL", "MSFT", "AMZN", "GOOG")
+factor_table <- get_factors(stocks)
+
+print(factor_table)
+
+```
+
+```{r}
+# 安装并载入套件
+install.packages("quantmod")
+install.packages("dplyr")
+
+library(quantmod)
+library(dplyr)
+
+# 1. 设定股票池
+stocks <- c("AAPL", "MSFT", "AMZN", "GOOG")
+
+# 2. 定义要抓的基本面指标
+fundamentals <- yahooQF(c(
+  "Price/Sales", 
+  "P/E Ratio", 
+  "Price/Book", 
+  "Return on Equity"
+))
+
+# 3. 批量抓取数据
+data_list <- lapply(stocks, function(sym) {
+  tryCatch({
+    quote <- getQuote(sym, what = fundamentals)
+    df <- data.frame(
+      stock = sym,
+      PriceToSales = as.numeric(quote[,"Price.Sales"]),
+      PE = as.numeric(quote[,"P.E.Ratio"]),
+      PB = as.numeric(quote[,"Price.Book"]),
+      ROE = as.numeric(quote[,"Return.on.Equity"])
+    )
+    return(df)
+  }, error = function(e) NULL)
+})
+
+# 4. 合并结果
+df <- do.call(rbind, data_list)
+
+# 5. 构建一个简单因子 (ROE / PB) 并排名
+df <- df %>%
+  mutate(ValueFactor = ROE / PB) %>%
+  arrange(desc(ValueFactor))
+
+print(df)
+```
+
+```{r}
+# 安装套件
+install.packages(c("quantmod", "rvest", "dplyr", "stringr"))
+library(quantmod)
+library(rvest)
+library(dplyr)
+library(stringr)
+
+# 股票池
+stocks <- c("AAPL", "MSFT", "AMZN", "GOOG")
+
+# 定义爬虫函数 (Yahoo Finance 财务数据)
+get_fundamentals <- function(symbol) {
+  url <- paste0("https://finance.yahoo.com/quote/", symbol, "/balance-sheet?p=", symbol)
+  
+  # 读取网页
+  page <- read_html(url)
+  
+  # 爬取 balance sheet 表格
+  tbl <- page %>%
+    html_nodes("div table") %>%
+    .[[1]] %>%
+    html_table(fill = TRUE)
+  
+  # 整理成 key-value 形式
+  tbl <- tbl %>%
+    setNames(c("Item", "Value")) %>%
+    mutate(Value = str_replace_all(Value, ",", "")) %>%
+    mutate(Value = as.numeric(Value))
+  
+  # 抓股东权益 (Total Stockholder Equity)
+  equity <- tbl %>% filter(Item == "Total Stockholder Equity") %>% pull(Value)
+  
+  # 再爬 Income Statement 抓 Net Income
+  url2 <- paste0("https://finance.yahoo.com/quote/", symbol, "/financials?p=", symbol)
+  page2 <- read_html(url2)
+  tbl2 <- page2 %>%
+    html_nodes("div table") %>%
+    .[[1]] %>%
+    html_table(fill = TRUE)
+  
+  tbl2 <- tbl2 %>%
+    setNames(c("Item", "Value")) %>%
+    mutate(Value = str_replace_all(Value, ",", "")) %>%
+    mutate(Value = as.numeric(Value))
+  
+  net_income <- tbl2 %>% filter(Item == "Net Income") %>% pull(Value)
+  
+  # 用 quantmod 抓当前股价
+  price <- as.numeric(getQuote(symbol)$Last)
+  
+  # 计算因子
+  roe <- net_income / equity
+  pe <- as.numeric(getQuote(symbol, what = yahooQF("P/E Ratio"))$"P.E.Ratio")
+  pb <- as.numeric(getQuote(symbol, what = yahooQF("Price/Book"))$"Price.Book")
+  
+  return(data.frame(
+    stock = symbol,
+    Price = price,
+    NetIncome = net_income,
+    Equity = equity,
+    ROE = roe,
+    PE = pe,
+    PB = pb,
+    ValueFactor = roe / pb
+  ))
+}
+
+# 批量执行
+results <- lapply(stocks, get_fundamentals)
+df <- do.call(rbind, results)
+
+# 按因子排序
+df_ranked <- df %>% arrange(desc(ValueFactor))
+
+print(df)
+print(df_ranked)
+```
+
+```{r}
 # 安装套件
 if(!require(shiny)) install.packages("shiny")
 if(!require(tidyquant)) install.packages("tidyquant")
