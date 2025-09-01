@@ -5,24 +5,34 @@ permalink: /about/
 image: 01.webp
 ---
 
-Hi, my name is Alex Rodriguez. I like being at the center of events, being free and enjoying every moment. Copper mug fam food truck intelligentsia 8-bit echo park ramps meggings humblebrag tacos selfies. Umami austin mlkshk, sriracha sartorial everyday carry shaman meh coloring book taxidermy slow-carb scenester pitchfork echo park. Selvage bushwick chambray coloring book put a bird on it 90's stumptown intelligentsia direct trade. Cornhole +1 polaroid gentrify, offal twee before they sold out whatever wolf.
+我的名字是geo,希望看韩剧和听音乐。
 
+本业是金融工程，但是理论背景不够充实。
 
-#### 南开大学 金融学
+所以需要进修读研究所。
+
+#### 南开大学 金融学(金融科技方向)
 <small>2026 - 2028</small>
 
-#### 台大资料科学学位学程 1年半(休学)
+期待能在中国拿下一个硕士学位，全中国国金融前1%
+
+#### 国立台湾大学 资料科学硕士学位学程 1年半(休学)
 <small>2022 - 2023</small>
 
-Offal post-ironic before they sold out mixtape you probably haven't heard of them. Pinterest roof party umami everyday carry street art. Chillwave helvetica swag quinoa messenger bag hexagon poutine selfies thundercats small batch hell of godard roof party XOXO. Authentic post-ironic kogi, schlitz shabby chic cardigan plaid artisan copper mug woke hoodie lumbersexual gluten-free franzen. Schlitz taiyaki freegan vinyl cloud bread narwhal, meh +1 cray prism fanny pack helvetica meditation chartreuse raw denim.
+身体生病了，金钱和学业压力过大导致这个机会不了了之。
+
+有点可惜，但是有机会的。
 
 #### 中国厦门腾星云有限公司
 <small>2020 - 2024</small>
 
-Chillwave helvetica swag quinoa messenger bag hexagon poutine selfies thundercats small batch hell of godard roof party XOXO. Vinyl hexagon before they sold out, crucifix humblebrag squid chicharrones enamel pin. Iceland humblebrag farm-to-table, lyft pug tilde irony.
-Hot chicken shoreditch tousled listicle, actually meggings vape. Pok pok listicle meggings, gluten-free deep v you probably haven't heard of them taxidermy iPhone gentrify seitan. Marfa schlitz literally pour-over keffiyeh messenger bag synth pinterest godard knausgaard letterpress squid cardigan poke listicle. 
+大学毕业的第一份工作兼顾着研究所的学业，虽然薪水不错，但是没有能力享受这段旅程
 
 #### 静宜大学 金融工程
 <small>2016 - 2020</small>
 
-Shoreditch activated charcoal iceland hexagon. Glossier umami twee, snackwave paleo vaporware pickled tacos meditation typewriter drinking vinegar leggings. Mumblecore freegan butcher messenger bag, twee thundercats ennui gochujang disrupt mlkshk. Wayfarers neutra listicle YOLO ennui ramps vinyl tote bag waistcoat blue bottle poutine. Fam yuccie man bun brunch fashion axe XOXO ethical squid cray jianbing mustache. Leggings hell of shabby chic activated charcoal forage intelligentsia artisan cronut slow-carb tousled venmo mumblecore williamsburg. Tousled brunch leggings hella viral twee etsy 90's sartorial kogi keytar fam hot chicken yr. Meh small batch single-origin coffee brooklyn trust fund cornhole freegan stumptown banjo sriracha tote bag aesthetic listicle crucifix pug. Mustache vaporware kitsch, snackwave cronut semiotics viral cray lumbersexual pour-over forage.
+综合大学3年的成绩拿下全校第一的名誉，在大学里学数学，金融和编程。
+
+程式码基础有了，但是金融工程背景不够扎实。
+
+需要在业界做进一步努力。
