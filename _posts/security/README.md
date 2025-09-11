@@ -30,8 +30,8 @@
 
 **目标**：了解常见 Web 漏洞并用 Python 进行验证与利用。
 
-* **Day 15**：Web 安全基础（OWASP Top 10 概览）
-* **Day 16**：SQL 注入与 Python 脚本自动化检测
+* **Day 15**：Web 安全基础（OWASP Top 10 概览）ok
+* **Day 16**：SQL 注入与 Python 脚本自动化检测 ok
 * **Day 17**：XSS（跨站脚本攻击）与防御
 * **Day 18**：CSRF 与会话劫持原理
 * **Day 19**：目录扫描与信息收集工具（Python + requests + 多线程）

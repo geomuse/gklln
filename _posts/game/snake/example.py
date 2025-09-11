@@ -1,135 +1,182 @@
-import torch
-import torch.nn as nn
-import torch.optim as optim
-import random
-import numpy as np
-import cv2  # 用于图像缩放
+import pygame, sys, random, heapq
 from collections import deque
-import pygame
-from gym_snake import SnakeEnv  
-import os
-os.environ["SDL_VIDEODRIVER"] = "dummy"
 
-# Q网络
-class DQNNet(nn.Module):
-    def __init__(self, input_shape, action_size):
-        super(DQNNet, self).__init__()
-        c, h, w = input_shape
-        self.conv = nn.Sequential(
-            nn.Conv2d(c, 32, kernel_size=8, stride=4),
-            nn.ReLU(),
-            nn.Conv2d(32, 64, kernel_size=4, stride=2),
-            nn.ReLU(),
-            nn.Conv2d(64, 64, kernel_size=3, stride=1),
-            nn.ReLU()
-        )
-        conv_out_size = self._get_conv_out(input_shape)
-        self.fc = nn.Sequential(
-            nn.Linear(conv_out_size, 512),
-            nn.ReLU(),
-            nn.Linear(512, action_size)
-        )
+# 配置
+CELL = 20
+COLS = 30
+ROWS = 20
+WIDTH = CELL * COLS
+HEIGHT = CELL * ROWS
+FPS = 12
 
-    def _get_conv_out(self, shape):
-        o = self.conv(torch.zeros(1, *shape))
-        return int(np.prod(o.size()))
+# 方向向量
+DIRS = {'UP': (0,-1), 'DOWN': (0,1), 'LEFT': (-1,0), 'RIGHT': (1,0)}
+OPPOSITE = {'UP':'DOWN','DOWN':'UP','LEFT':'RIGHT','RIGHT':'LEFT'}
 
-    def forward(self, x):
-        x = x.float() / 255.0  # 归一化
-        conv_out = self.conv(x)
-        return self.fc(conv_out.view(x.size()[0], -1))
+def in_bounds(pos):
+    x,y = pos
+    return 0 <= x < COLS and 0 <= y < ROWS
 
-# 经验回放
-class ReplayBuffer:
-    def __init__(self, capacity):
-        self.buffer = deque(maxlen=capacity)
-    def push(self, state, action, reward, next_state, done):
-        self.buffer.append((state, action, reward, next_state, done))
-    def sample(self, batch_size):
-        batch = random.sample(self.buffer, batch_size)
-        state, action, reward, next_state, done = zip(*batch)
-        return np.array(state), action, reward, np.array(next_state), done
-    def __len__(self):
-        return len(self.buffer)
+def neighbors(pos):
+    x,y = pos
+    for dx,dy in DIRS.values():
+        nx,ny = x+dx, y+dy
+        if in_bounds((nx,ny)):
+            yield (nx,ny)
 
-# 预处理：灰度 + 缩小
-def preprocess(obs):
-    obs_gray = cv2.cvtColor(obs, cv2.COLOR_RGB2GRAY)
-    obs_resize = cv2.resize(obs_gray, (84, 84), interpolation=cv2.INTER_AREA)
-    return np.expand_dims(obs_resize, axis=0)  # (1,84,84)
+# A* shortest path avoiding obstacles
+def astar(start, goal, obstacles):
+    def h(a,b):
+        return abs(a[0]-b[0]) + abs(a[1]-b[1])
+    open_heap = []
+    heapq.heappush(open_heap, (h(start,goal), 0, start, None))
+    came = {}
+    gscore = {start:0}
+    while open_heap:
+        f,g,curr,prev = heapq.heappop(open_heap)
+        if curr in came: continue
+        came[curr] = prev
+        if curr == goal:
+            # reconstruct
+            path = []
+            node = curr
+            while node != start:
+                path.append(node)
+                node = came[node]
+            path.reverse()
+            return path
+        for n in neighbors(curr):
+            if n in obstacles and n != goal: 
+                continue
+            tentative = g + 1
+            if n not in gscore or tentative < gscore[n]:
+                gscore[n] = tentative
+                heapq.heappush(open_heap, (tentative + h(n,goal), tentative, n, curr))
+    return None
 
-# DQN训练
-def train_dqn(env, episodes=500):
-    action_size = env.action_space.n
-    state_shape = (1, 84, 84)  # 灰度图
-    online_net = DQNNet(state_shape, action_size)
-    target_net = DQNNet(state_shape, action_size)
-    target_net.load_state_dict(online_net.state_dict())
+# flood fill count reachable cells from pos avoiding obstacles
+def flood_count(start, obstacles):
+    q = deque([start])
+    seen = {start}
+    while q:
+        cur = q.popleft()
+        for n in neighbors(cur):
+            if n in seen or n in obstacles:
+                continue
+            seen.add(n)
+            q.append(n)
+    return len(seen)
 
-    optimizer = optim.Adam(online_net.parameters(), lr=1e-4)
-    buffer = ReplayBuffer(10000)
-
-    gamma = 0.99
-    batch_size = 32
-    epsilon = 1.0
-    epsilon_min = 0.1
-    epsilon_decay = 0.995
-    target_update_freq = 10
-
-    for ep in range(episodes):
-        obs = env.reset()
-        obs = preprocess(obs)
-        total_reward = 0
-        done = False
-
-        while not done:
-            pygame.event.pump()  # 处理pygame事件，防止阻塞
-
-            # ε-greedy
-            if random.random() < epsilon:
-                action = env.action_space.sample()
+# choose next move for auto snake
+def get_auto_move(snake, food):
+    head = snake[0]
+    body_set = set(snake)  # obstacles
+    # try find path to food
+    path = astar(head, food, body_set)
+    if path:
+        # safety check: simulate path and ensure after reaching food there's space (flood fill)
+        # simulate snake after following path (assume it will grow by 1 at food)
+        sim_snake = list(snake)
+        for step in path:
+            sim_snake.insert(0, step)
+            if step == food:
+                # grows: do not pop tail this step
+                pass
             else:
-                with torch.no_grad():
-                    q_values = online_net(torch.tensor(obs).unsqueeze(0))
-                    action = q_values.argmax().item()
+                sim_snake.pop()
+        # after simulation, check reachability from head to tail (or check flood)
+        obstacles_after = set(sim_snake)
+        # compute flood from new head; if reachable cells count >= len(sim_snake) it's safe-ish
+        reachable = flood_count(sim_snake[0], obstacles_after - {sim_snake[-1]})
+        if reachable >= len(sim_snake):
+            next_pos = path[0]
+            dx = next_pos[0] - head[0]
+            dy = next_pos[1] - head[1]
+            for k,v in DIRS.items():
+                if v == (dx,dy): return k
+    # fallback: try move towards tail (follow-tail strategy)
+    tail = snake[-1]
+    obstacles_no_tail = set(snake[:-1])  # tail will move, so it's free next
+    path2 = astar(head, tail, obstacles_no_tail)
+    if path2:
+        next_pos = path2[0]
+        dx = next_pos[0] - head[0]
+        dy = next_pos[1] - head[1]
+        for k,v in DIRS.items():
+            if v == (dx,dy): return k
+    # last fallback: any safe direction
+    for k,(dx,dy) in DIRS.items():
+        nx,ny = head[0]+dx, head[1]+dy
+        if in_bounds((nx,ny)) and (nx,ny) not in set(snake[:-1]):
+            return k
+    return 'UP'  # no choice
 
-            next_obs, reward, done, _ = env.step(action)
-            reward -= 0.01  # 惩罚拖延
-            next_obs = preprocess(next_obs)
+# Pygame 主循环与渲染
+def main():
+    pygame.init()
+    screen = pygame.display.set_mode((WIDTH, HEIGHT))
+    clock = pygame.time.Clock()
+    font = pygame.font.SysFont(None, 24)
 
-            buffer.push(obs, action, reward, next_obs, done)
-            obs = next_obs
-            total_reward += reward
+    # 初始蛇与食物
+    snake = [(COLS//2 + i, ROWS//2) for i in range(3)][::-1]  # head at front
+    direction = 'LEFT'
+    food = None
 
-            # 训练
-            if len(buffer) >= batch_size:
-                s, a, r, s_next, d = buffer.sample(batch_size)
-                s = torch.tensor(s)
-                a = torch.tensor(a)
-                r = torch.tensor(r, dtype=torch.float32)
-                s_next = torch.tensor(s_next)
-                d = torch.tensor(d, dtype=torch.float32)
+    def place_food():
+        while True:
+            p = (random.randrange(COLS), random.randrange(ROWS))
+            if p not in snake:
+                return p
 
-                q_values = online_net(s).gather(1, a.unsqueeze(1)).squeeze(1)
-                with torch.no_grad():
-                    max_next_q = target_net(s_next).max(1)[0]
-                    target_q = r + gamma * max_next_q * (1 - d)
+    food = place_food()
+    score = 0
 
-                loss = nn.MSELoss()(q_values, target_q)
-                optimizer.zero_grad()
-                loss.backward()
-                optimizer.step()
+    while True:
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit(); sys.exit()
 
-        # 更新epsilon
-        epsilon = max(epsilon_min, epsilon * epsilon_decay)
+        # 自动决定方向
+        direction = get_auto_move(snake, food)
 
-        # 更新target网络
-        if ep % target_update_freq == 0:
-            target_net.load_state_dict(online_net.state_dict())
+        dx,dy = DIRS[direction]
+        new_head = (snake[0][0] + dx, snake[0][1] + dy)
+        # 撞墙或撞自己 => 重新开始
+        if not in_bounds(new_head) or new_head in snake[:-1]:
+            # game over -> reset
+            snake = [(COLS//2 + i, ROWS//2) for i in range(3)][::-1]
+            direction = 'LEFT'
+            food = place_food()
+            score = 0
+            continue
 
-        print(f"Episode {ep}, Reward: {total_reward:.2f}, Epsilon: {epsilon:.2f}")
+        snake.insert(0, new_head)
+        if new_head == food:
+            score += 1
+            food = place_food()
+        else:
+            snake.pop()
 
-if __name__ == "__main__":
+        # 渲染
+        screen.fill((10,10,10))
+        # grid optional
+        for x in range(COLS):
+            for y in range(ROWS):
+                pygame.draw.rect(screen, (18,18,18), (x*CELL, y*CELL, CELL, CELL), 1)
+        # 食物
+        pygame.draw.rect(screen, (200,30,30), (food[0]*CELL, food[1]*CELL, CELL, CELL))
+        # 蛇
+        for i,seg in enumerate(snake):
+            color = (50,200,50) if i==0 else (30,150,30)
+            pygame.draw.rect(screen, color, (seg[0]*CELL+1, seg[1]*CELL+1, CELL-2, CELL-2))
+        # 分数
+        txt = font.render(f"Score: {score}", True, (200,200,200))
+        screen.blit(txt, (8,8))
 
-    env = SnakeEnv()
-    train_dqn(env, episodes=500)
+        pygame.display.flip()
+        clock.tick(FPS)
+
+if __name__ == '__main__':
+    
+    main()
