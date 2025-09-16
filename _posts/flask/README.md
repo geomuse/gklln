@@ -226,3 +226,69 @@
 需要我從 **Day 1（SQLAlchemy 安裝與設定）** 開始詳細講解嗎？
 你也可以說：「請開始 Day 1」或「給我 Day 1 教材」。我會一步步幫你建立完整後端資料庫操作能力。
 
+好的 👍 我帮你整理一个 **Django 30 天学习教学计划**，从零开始，逐步进阶到能写出一个完整的 Web 应用。每天大约学习 1–2 小时即可。
+
+---
+
+# 📘 Django 30 天学习计划
+
+### **第 1 周：Django 入门与基础**
+
+* **Day 1**：Django 简介、安装与环境配置（虚拟环境、pip、Django）
+* **Day 2**：第一个 Django 项目（`django-admin startproject`，项目结构解析）
+* **Day 3**：运行开发服务器、理解 `settings.py` 与 `urls.py`
+* **Day 4**：创建第一个应用（`python manage.py startapp`）
+* **Day 5**：Django MTV 架构（Model-Template-View）
+* **Day 6**：Django URL 路由系统（path、re\_path、include）
+* **Day 7**：Django 视图函数（HttpResponse、render、JsonResponse）
+
+---
+
+### **第 2 周：模板与模型**
+
+* **Day 8**：Django 模板系统（HTML 渲染、变量、标签、过滤器）
+* **Day 9**：模板继承与静态文件（CSS、JS、图片）
+* **Day 10**：模型 (Models) 基础（定义模型类、字段类型）
+* **Day 11**：数据库迁移（`makemigrations`、`migrate`）
+* **Day 12**：Django ORM（增删改查）
+* **Day 13**：Admin 管理后台（注册模型、自定义显示）
+* **Day 14**：模型关系（一对一、一对多、多对多）
+
+---
+
+### **第 3 周：表单与用户系统**
+
+* **Day 15**：Django 表单基础（`forms.Form`）
+* **Day 16**：ModelForm（基于模型的表单）
+* **Day 17**：表单验证（clean、is\_valid、错误处理）
+* **Day 18**：用户认证系统（User 模型、登录、登出）
+* **Day 19**：注册新用户（创建用户、加密密码）
+* **Day 20**：权限与组（Permissions、Groups）
+* **Day 21**：中间件介绍（请求/响应处理流程）
+
+---
+
+### **第 4 周：进阶与实战**
+
+* **Day 22**：Django Class-based Views（CBV）
+* **Day 23**：通用视图（ListView、DetailView、CreateView）
+* **Day 24**：分页、搜索与过滤
+* **Day 25**：Django REST Framework (DRF) 简介
+* **Day 26**：用 DRF 创建 API（序列化、ViewSet、Router）
+* **Day 27**：前后端交互（AJAX、Fetch API 与 JSON）
+* **Day 28**：部署 Django 项目（Gunicorn、Nginx、数据库）
+* **Day 29**：调试与日志（logging、debug toolbar）
+* **Day 30**：综合实战项目：一个简易 **博客/任务管理系统**
+
+---
+
+## 🎯 学完后你能做什么？
+
+* 能够独立开发中小型 Web 应用（如博客、商城、任务管理）
+* 会使用 Django ORM 与 REST API
+* 掌握 Django 用户认证、表单、权限控制
+* 会部署上线（Linux + Gunicorn + Nginx + PostgreSQL）
+
+---
+
+要不要我帮你把 **每天的学习内容写成「详细教学+代码示例」版**（比如从 Day 1 开始，带你一步一步敲代码）？
