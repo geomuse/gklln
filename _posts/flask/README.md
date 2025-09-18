@@ -234,10 +234,10 @@
 
 ### **第 1 周：Django 入门与基础**
 
-* **Day 1**：Django 简介、安装与环境配置（虚拟环境、pip、Django）
-* **Day 2**：第一个 Django 项目（`django-admin startproject`，项目结构解析）
-* **Day 3**：运行开发服务器、理解 `settings.py` 与 `urls.py`
-* **Day 4**：创建第一个应用（`python manage.py startapp`）
+* **Day 1**：Django 简介、安装与环境配置（虚拟环境、pip、Django） ok
+* **Day 2**：第一个 Django 项目（`django-admin startproject`，项目结构解析） ok
+* **Day 3**：运行开发服务器、理解 `settings.py` 与 `urls.py` ok
+* **Day 4**：创建第一个应用（`python manage.py startapp`）ok
 * **Day 5**：Django MTV 架构（Model-Template-View）
 * **Day 6**：Django URL 路由系统（path、re\_path、include）
 * **Day 7**：Django 视图函数（HttpResponse、render、JsonResponse）
