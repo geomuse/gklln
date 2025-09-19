@@ -238,7 +238,7 @@
 * **Day 2**：第一个 Django 项目（`django-admin startproject`，项目结构解析） ok
 * **Day 3**：运行开发服务器、理解 `settings.py` 与 `urls.py` ok
 * **Day 4**：创建第一个应用（`python manage.py startapp`）ok
-* **Day 5**：Django MTV 架构（Model-Template-View）
+* **Day 5**：Django MTV 架构（Model-Template-View）ok 
 * **Day 6**：Django URL 路由系统（path、re\_path、include）
 * **Day 7**：Django 视图函数（HttpResponse、render、JsonResponse）
 
