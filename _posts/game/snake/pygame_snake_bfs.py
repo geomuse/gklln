@@ -138,18 +138,24 @@ class snake():
         pygame.display.update()
         self.clock.tick(self.snake_speed)
         
-        if mode in ('human','h'):
-            # 等待玩家操作
-            for event in pygame.event.get():
-                if event.type == pygame.KEYDOWN :
-                    if event.key == pygame.K_UP:
-                        return 0 
-                    elif event.key == pygame.K_DOWN:
-                        return 1
-                    elif event.key == pygame.K_LEFT:
-                        return 2
-                    elif event.key == pygame.K_RIGHT:
-                        return 3
+        for event in pygame.event.get():
+            # 關鍵！檢查使用者是否嘗試關閉窗口 (點擊 'X' 或系統關閉)
+            if event.type == pygame.QUIT:
+                self.close() # 調用 close 方法來關閉 Pygame
+                # 注意: 因為 close() 裡有 quit()，程式會在這裡停止
+                
+            if mode in ('human','h'):
+                # 等待玩家操作
+                for event in pygame.event.get():
+                    if event.type == pygame.KEYDOWN :
+                        if event.key == pygame.K_UP:
+                            return 0 
+                        elif event.key == pygame.K_DOWN:
+                            return 1
+                        elif event.key == pygame.K_LEFT:
+                            return 2
+                        elif event.key == pygame.K_RIGHT:
+                            return 3
 
     def close(self):
         pygame.quit()
