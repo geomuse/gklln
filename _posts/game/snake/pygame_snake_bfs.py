@@ -119,7 +119,7 @@ class snake():
         if self.snake_x == self.food_x and self.snake_y == self.food_y:
             self.food_x = round(random.randrange(0, self.window_width - self.snake_block) / 20.0) * 20.0
             self.food_y = round(random.randrange(0, self.window_height - self.snake_block) / 20.0) * 20.0
-            # self.snake_length += 1
+            self.snake_length = 2
             self.reward += 1
 
         observation = self.get_observation()

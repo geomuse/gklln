@@ -133,7 +133,7 @@ class snake():
 
         if self.snake_x == self.food_x and self.snake_y == self.food_y:
             self.food_x, self.food_y = self._random_food_pos() # 使用修正後的食物初始化
-            # self.snake_length += 1
+            self.snake_length = 2 
             self.reward += 1
 
         observation = self.get_observation()
