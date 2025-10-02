@@ -68,6 +68,7 @@ class snake():
         self._init_windows()
         self.snake_list = []
         self.snake_length = 1
+        self.reward = 0 
         self.snake_x = self.window_width / 2
         self.snake_y = self.window_height / 2
         self.snake_x_change = 0
@@ -104,17 +105,17 @@ class snake():
         self.snake_y += self.snake_y_change
 
         done = False
-        reward = 0
+        # reward += 0
 
         if self.snake_x >= self.window_width or self.snake_x < 0 or self.snake_y >= self.window_height or self.snake_y < 0 :
             self.score_table_show()
             done = True
-            reward = -10
+            # reward = -10
 
         if [self.snake_x, self.snake_y] in self.snake_list[:-1]:
             self.score_table_show()
             done = True
-            reward = -1
+            # reward = -1
 
         self.game_window.fill(self.white)
         self.design_food()
@@ -127,16 +128,16 @@ class snake():
 
         self.design_snake(self.snake_block, self.snake_list)
         
-        self.display_score(self.snake_length - 1)
+        self.display_score(self.reward)
         pygame.display.update()
 
         if self.snake_x == self.food_x and self.snake_y == self.food_y:
             self.food_x, self.food_y = self._random_food_pos() # 使用修正後的食物初始化
-            self.snake_length += 1
-            reward = 10
+            # self.snake_length += 1
+            self.reward += 1
 
         observation = self.get_observation()
-        return observation, reward, done, {}
+        return observation, self.reward, done, {}
 
     def get_observation(self):
         observation = pygame.surfarray.array3d(pygame.display.get_surface())
@@ -147,7 +148,7 @@ class snake():
         self.game_window.fill(self.white)
         pygame.draw.rect(self.game_window, self.purple, [self.food_x, self.food_y, self.snake_block, self.snake_block])
         self.design_snake(self.snake_block, self.snake_list)
-        self.display_score(self.snake_length - 1)
+        self.display_score(self.reward - 1)
         pygame.display.update()
         self.clock.tick(self.snake_speed)
         
@@ -208,9 +209,7 @@ class snake():
                     queue.append((next_pos, path + [next_pos]))
                     
         return False
-    # ------------------------------------
 
-    # --- 核心 AI 邏輯 (修改以包含生存策略) ---
     def bfs_agent(self,env):
         """用 BFS 找到食物並檢查逃生路線，最大化生存時間"""
         head = (int(env.snake_x), int(env.snake_y))
@@ -299,7 +298,6 @@ class snake():
                 
         # 無路可走
         return random.choice([0, 1, 2, 3]) 
-    # ------------------------------------
 
 if __name__ == "__main__":
     try:
