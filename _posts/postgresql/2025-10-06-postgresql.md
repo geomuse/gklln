@@ -53,6 +53,10 @@ tags:
 如果您想创建一个更健壮的 `users` 表结构，可以结合这些知识：
 
 ```sql
+CREATE TABLE users(id SERIAL PRIMARY KEY, name TEXT, age INT);
+```
+
+```sql
 CREATE TABLE users_extended (
     id BIGSERIAL PRIMARY KEY,  -- 使用 BIGSERIAL 应对大数据量
     username VARCHAR(50) UNIQUE NOT NULL, -- 强制用户名唯一且非空
@@ -62,5 +66,3 @@ CREATE TABLE users_extended (
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW() -- 自动记录创建时间，带时区
 );
 ```
-
-理解并正确应用数据类型和约束是设计高性能、高可靠性数据库的关键。您对哪个部分最感兴趣？例如：**外键的使用**、**JSONB 类型**，还是**索引**？
