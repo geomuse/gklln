@@ -22,9 +22,17 @@ conn = psycopg2.connect(
     host="localhost",
     port="5432"
 )
+
 cur = conn.cursor()
+```
+
+设定数据库
+
+```py
 cur.execute("SELECT version();")
 print(cur.fetchone())
 cur.close()
 conn.close()
 ```
+
+查询数据库版本
