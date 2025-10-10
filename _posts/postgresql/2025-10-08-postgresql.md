@@ -12,7 +12,7 @@ tags:
 import psycopg2
 
 conn = psycopg2.connect(
-    dbname="testdb",
+    dbname="demodb",
     user="postgres",
     password="123",
     host="localhost",

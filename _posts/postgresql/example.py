@@ -1,14 +1,18 @@
 import psycopg2
 
 conn = psycopg2.connect(
-    dbname="testdb",
+    dbname="demodb",
     user="postgres",
     password="123",
     host="localhost",
     port="5432"
 )
-cur = conn.cursor()
-cur.execute("SELECT version();")
-print(cur.fetchone())
-cur.close()
-conn.close()
+cursor = conn.cursor()
+select_all_query = "SELECT * FROM users;"
+
+cursor.execute(select_all_query)
+
+all_users = cursor.fetchall()
+
+for row in all_users:
+    print(row)

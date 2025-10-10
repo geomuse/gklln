@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  数据库管理postgresql 新增数据 python
+title:  数据库管理postgresql 查询数据 python
 date:   2025-10-07 09:01:00 +0800
 image: 09.jpg
 tags: 
@@ -16,7 +16,7 @@ CREATE DATABASE testdb;
 import psycopg2
 
 conn = psycopg2.connect(
-    dbname="testdb",
+    dbname="demodb",
     user="postgres",
     password="123",
     host="localhost",
