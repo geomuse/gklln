@@ -292,3 +292,445 @@
 ---
 
 要不要我帮你把 **每天的学习内容写成「详细教学+代码示例」版**（比如从 Day 1 开始，带你一步一步敲代码）？
+
+
+下面给你 **Flask 30 天完整学习计划（超清晰、每天都有目标＋练习＋成果）**。
+适合你现在的学习进度（你已经做到 Flask-Mail、RESTful、Login、API 等），我会重新整理成 **完整系统化 30 天版本**，并保证步伐适中、每天一个主题、每天都有可完成的 mini project。
+
+---
+
+# ✅ **Flask 30天学习路线（适合初学到中级，含项目）**
+
+---
+
+# 🔥 **第 1 周：Flask 基础与 Web 核心**
+
+---
+
+## **Day 1｜Flask 基本概念 & 第一个 App**
+
+内容：
+
+* 什么是 Flask（轻量框架、WSGI、Jinja2）
+* 搭建虚拟环境 venv
+* Hello Flask
+* 路由与视图函数
+
+练习：
+
+* 建立 `/hello` `/about` 两个页面。
+
+---
+
+## **Day 2｜路由、变量规则、URL 反转**
+
+内容：
+
+* `<string:name>` `<int:id>` 路由变量
+* `url_for()`
+
+练习：
+
+* 建立 `/user/<name>` 页面动态显示用户名称。
+
+---
+
+## **Day 3｜模板 Jinja2 基础**
+
+内容：
+
+* 模板继承（base.html）
+* block、include
+* Jinja2 表达式、循环、条件判断
+
+练习：
+
+* 建立一个有 navbar 的网站框架。
+
+---
+
+## **Day 4｜静态文件 Static**
+
+内容：
+
+* static 文件夹
+* 引入 CSS/JS/Image
+
+练习：
+
+* 加上 Bootstrap 做简单页面。
+
+---
+
+## **Day 5｜表单基础（不使用 WTForms）**
+
+内容：
+
+* HTML form
+* POST/GET
+* request.form
+
+练习：
+
+* 登录表单（仅验证输入，不做数据库）。
+
+---
+
+## **Day 6｜Flask-WTF 表单验证**
+
+内容：
+
+* CSRF
+* Form class
+* validators
+
+练习：
+
+* 做一个注册表单，包含 email 验证。
+
+---
+
+## **Day 7｜小项目 1：迷你登录系统（无数据库）**
+
+产出：
+
+* 注册页（数据暂存在内存）
+* 登录页
+* 会显示 “欢迎 xxx”
+
+---
+
+# 🔥 **第 2 周：数据库 CRUD 与用户系统**
+
+---
+
+## **Day 8｜SQL 基础与 Flask SQLAlchemy 入门**
+
+内容：
+
+* 创建数据库（SQLite）
+* Model 建立
+* session.add / commit
+
+练习：
+
+* 建立 User 表（id, name, email）
+
+---
+
+## **Day 9｜CRUD：Create & Read**
+
+内容：
+
+* 插入资料
+* 查询资料（all / filter）
+
+练习：
+
+* 页面列出全部用户清单。
+
+---
+
+## **Day 10｜CRUD：Update & Delete**
+
+内容：
+
+* 更新记录
+* 删除记录（POST 方法）
+
+练习：
+
+* 做一个“编辑用户”页面。
+
+---
+
+## **Day 11｜Flask-Migrate 数据库迁移**
+
+内容：
+
+* init / migrate / upgrade
+* 数据表版本管理
+
+练习：
+
+* 为 User 表新增 “age”。
+
+---
+
+## **Day 12｜Flask-Login 用户认证基础**
+
+内容：
+
+* login_user()
+* current_user
+* logout_user()
+* UserMixin
+
+练习：
+
+* 实作“需登录才能访问的页面”。
+
+---
+
+## **Day 13｜密码哈希：werkzeug.security**
+
+内容：
+
+* generate_password_hash
+* check_password_hash
+
+练习：
+
+* 用户注册自动加密密码。
+
+---
+
+## **Day 14｜小项目 2：完整注册 + 登录 + 登出系统**
+
+产出：
+
+* 注册
+* 登录
+* 登出
+* 受保护页面
+* 使用 SQLAlchemy + Flask-Login
+
+---
+
+# 🔥 **第 3 周：进阶开发、API、邮件、文件上传**
+
+---
+
+## **Day 15｜RESTful API 基础**
+
+内容：
+
+* JSON 返回
+* api 路由
+* jsonify
+
+练习：
+
+* 写一个 `/api/users` 列出用户 JSON。
+
+---
+
+## **Day 16｜Flask-RESTful 进阶 API 构建**
+
+内容：
+
+* Resource class
+* get/post/put/delete
+
+练习：
+
+* 建立用户管理 REST API。
+
+---
+
+## **Day 17｜邮件发送 Flask-Mail（你已做到 Day25 部分）**
+
+内容：
+
+* mail = Mail(app)
+* send() 基本邮件
+* HTML email
+
+练习：
+
+* 注册后发送欢迎邮件。
+
+---
+
+## **Day 18｜文件上传**
+
+内容：
+
+* request.files
+* 保存文件
+* 限制文件类型
+
+练习：
+
+* 做一个头像上传功能。
+
+---
+
+## **Day 19｜日志与调试**
+
+内容：
+
+* app.logger
+* logging 文件
+* Flask debug toolbar
+
+练习：
+
+* 每次用户访问都记录 log。
+
+---
+
+## **Day 20｜Session / Cookie 机制**
+
+内容：
+
+* session['username']
+* 设置 cookie
+
+练习：
+
+* 建一个“最近访问记录”。
+
+---
+
+## **Day 21｜小项目 3：用户中心 + 上传头像 + API**
+
+产出：
+
+* 登录系统
+* 查看/修改个人资料
+* 上传头像
+* `/api/me` 取得个人 JSON
+
+---
+
+# 🔥 **第 4 周：部署、优化、安全、大型项目**
+
+---
+
+## **Day 22｜Blueprint 模块化**
+
+内容：
+
+* 分离 routes/controllers
+* admin / user 蓝图
+
+练习：
+
+* 将用户相关代码移至 blueprint。
+
+---
+
+## **Day 23｜错误处理 & 全局异常捕捉**
+
+内容：
+
+* 404、500自定义页面
+* errorhandler 装饰器
+
+练习：
+
+* 加入美观的 404 页面。
+
+---
+
+## **Day 24｜配置管理 config.py**
+
+内容：
+
+* BaseConfig / DevConfig / ProdConfig
+* 环境变量
+
+练习：
+
+* 将数据库、邮件设为配置类。
+
+---
+
+## **Day 25｜Gunicorn + Nginx 部署（你正在学）**
+
+内容：
+
+* wsgi.py
+* Gunicorn 多 worker
+* Nginx reverse proxy
+
+练习：
+
+* 在本地模拟生产环境。
+
+---
+
+## **Day 26｜性能优化**
+
+内容：
+
+* SQL 慢查询分析
+* Cache（Flask-Caching）
+* 使用分页
+
+练习：
+
+* 为用户列表加入分页。
+
+---
+
+## **Day 27｜安全防护**
+
+内容：
+
+* CSRF
+* XSS
+* 密码加盐
+* 限制尝试登录次数（Flask-Limiter）
+
+练习：
+
+* 安全加固你的注册登录系统。
+
+---
+
+## **Day 28｜JWT Token 认证**
+
+内容：
+
+* Flask-JWT-Extended
+* access token / refresh token
+* API 安全
+
+练习：
+
+* 构建 `/api/login` 返回 JWT。
+
+---
+
+## **Day 29｜大型项目结构化设计**
+
+内容：
+
+* MVC / Service Layer
+* 蓝图架构重组
+* 模块化、可维护性
+
+练习：
+
+* 将整个项目重构为专业架构。
+
+---
+
+## **Day 30｜最终大项目：Flask 全功能 Web应用**
+
+可选方向：
+
+* ✔ ToDo 计时器＋Telegram 通知（你之前想做）
+* ✔ Blog 系统（含后台管理）
+* ✔ 完整会员系统（含头像、邮件、JWT、API）
+* ✔ 迷你电商（购物车 + 订单）
+
+产出：
+
+* 一个可部署、生产级、完整的 Flask 项目！
+
+---
+
+# 🎁 需要我按照这个 30 天计划，把每天的教学内容写成「完整课程」吗？
+
+例如：
+
+✔ Day 1 完整代码
+✔ Day 2 详细图解路由
+✔ Day 3 Jinja2 模板完整教程
+✔ Day 12 Flask-Login 全步骤
+✔ Day 21 完整用户中心项目
+
+如果你要，我可以帮你开始 **Day 1 完整教学 + 代码示范**。
