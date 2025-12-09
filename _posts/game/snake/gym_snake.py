@@ -39,13 +39,6 @@ class SnakeEnv(gym.Env):
         if action != None :
             print(action)
         return self.step(action)
-    
-    def rl_run(self,observation):
-        with open('data/q_table.pkl', 'rb') as f:
-            q_table = pickle.load(f)
-        
-        action = np.argmax(q_table[observation, :])
-        return env.step(action)
 
     def framework(self,mode=None):
         observation = self.reset()
@@ -59,12 +52,7 @@ class SnakeEnv(gym.Env):
                 case 'human' | 'h': 
                     while not done:
                         observation, reward, done, _ = self.run()
-                case 'rl' :
-                    while not done:
-                        next_observation , _ , done , _ = self.rl_run(observation)
-                        self.render()
-                        observation = next_observation
-
+                        
 if __name__ == '__main__':
 
     env = SnakeEnv()
