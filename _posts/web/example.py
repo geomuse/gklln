@@ -1,19 +1,17 @@
-import re
-from playwright.sync_api import Playwright, sync_playwright, expect
+import requests 
+from bs4 import BeautifulSoup
 
+if __name__ == "__main__":
 
-def run(playwright: Playwright) -> None:
-    browser = playwright.chromium.launch(headless=False)
-    context = browser.new_context()
-    page = context.new_page()
-    page.goto("https://missav.ai/dm19/ms")
-    page.get_by_role("link", name="Melayu").click()
-    page.get_by_role("link", name="简体中文 简体中文").dblclick()
-    page.screenshot(path="pyout.png")
-    # ---------------------
-    context.close()
-    browser.close()
+    headers = {
+        'User-Agent': 'Mozilla/5.0',
+    }
+    response = requests.get('https://en.wikipedia.org/wiki/Python_(programming_language)', headers=headers)
+    soup = BeautifulSoup(response.text,'html.parser')
 
+    content = soup.select('p')
 
-with sync_playwright() as playwright:
-    run(playwright)
+    # 直接提取文本，避免对 Tag 对象做正则替换
+    content = content[2].get_text(" ", strip=True)
+    print(content)
+
